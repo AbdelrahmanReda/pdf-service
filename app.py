@@ -11,19 +11,22 @@ def index():
 
 @app.route('/convert', methods=['POST'])
 def convert_to_pdf():
-    html_content = request.form.get('html_content')
+    try:
+        html_content = request.form.get('html_content')
 
-    if not html_content:
-        return 'HTML content is required', 400
+        if not html_content:
+            return 'HTML content is required', 400
 
-    # Generate PDF from HTML content
-    pdf_data = HTML(string=html_content).write_pdf()
+        # Generate PDF from HTML content
+        pdf_data = HTML(string=html_content).write_pdf()
 
-    # Save the PDF to a file
-    with open('output.pdf', 'wb') as f:
-        f.write(pdf_data)
+        # Save the PDF to a file
+        with open('output.pdf', 'wb') as f:
+            f.write(pdf_data)
 
-    return send_file('output.pdf', as_attachment=True)
+        return send_file('output.pdf', as_attachment=True)
+    except Exception as e:
+        return f"An error occurred: {str(e)}", 500
 
 
 if __name__ == '__main__':
