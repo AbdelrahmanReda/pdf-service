@@ -3,6 +3,12 @@ from weasyprint import HTML
 
 app = Flask(__name__)
 
+
+@app.route('/')
+def index():
+    return 'Hello World!'
+
+
 @app.route('/convert', methods=['POST'])
 def convert_to_pdf():
     html_content = request.form.get('html_content')
@@ -18,5 +24,7 @@ def convert_to_pdf():
         f.write(pdf_data)
 
     return send_file('output.pdf', as_attachment=True)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
